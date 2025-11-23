@@ -25,20 +25,6 @@ def setup_driver():
     
     return driver
 
-def load_cookies(driver, path="cookies.json"):
-    with open(path, "r") as f:
-        cookies = json.load(f)
-
-    for cookie in cookies:
-        # Selenium requires cookies to not have 'sameSite': 'None' without 'secure': True
-        if "sameSite" in cookie and cookie["sameSite"] == "None":
-            cookie["sameSite"] = "Strict"
-        try:
-            driver.add_cookie(cookie)
-        except Exception:
-            print("Error loading cookies")
-            pass
-    print("Cookies loaded succesfully")
 
 def parse_into_text(day, month, year):
     hash = {0: 'JANUARY', 1: 'FEBRUARY', 2: 'MARCH', 3: 'APRIL', 4: 'MAY', 5: 'JUNE', 
