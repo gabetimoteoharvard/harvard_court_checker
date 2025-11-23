@@ -1,30 +1,28 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.action_chains import ActionChains
 import time
-import json
 import datetime
 from emailer import send_email
-import os
+import chromedriver_autoinstaller
+
+
 
 
 def setup_driver():
 
+    chromedriver_autoinstaller.install()  # downloads correct chromedriver
+
     options = webdriver.ChromeOptions()
+
     options.add_argument("--headless=new")      # run Chrome in background
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
 
-    options.binary_location = os.environ.get("CHROME_BIN", "/usr/bin/chromium")
-
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()),
-                             options= options)
+    driver = webdriver.Chrome(options= options)
     
     return driver
 
