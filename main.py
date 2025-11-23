@@ -13,17 +13,19 @@ import os
 
 
 def setup_driver():
-    chromedriver_autoinstaller.install()  # downloads correct chromedriver
+    # Install correct ChromeDriver automatically
+    chromedriver_autoinstaller.install(path="/usr/local/bin")  # path can be anywhere in PATH
 
     options = webdriver.ChromeOptions()
-    options.binary_location = os.environ.get("CHROME_BIN")  
+    options.binary_location = "/usr/bin/chromium"  # tell Selenium where Chromium is
     options.add_argument("--headless=new")
-    options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(options=options)
+
     return driver
 
 
