@@ -22,6 +22,8 @@ def setup_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
 
+    options.binary_location = "/usr/bin/chromium"
+
     driver = webdriver.Chrome(options= options)
     
     return driver
