@@ -34,4 +34,5 @@ ENV CHROME_BIN=/usr/bin/chromium
 ENV PATH="$PATH:/usr/bin"
 
 # Run your app
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
+
