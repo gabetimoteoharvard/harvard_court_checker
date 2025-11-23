@@ -1,23 +1,24 @@
-# Start with Python 3.13 slim image
+# Use Python base image
 FROM python:3.13-slim
 
-# Install Chromium and some necessary tools
+# Install Chromium and dependencies
 RUN apt-get update && \
-    apt-get install -y chromium wget curl unzip && \
+    apt-get install -y chromium chromium-driver && \
     rm -rf /var/lib/apt/lists/*
 
-# Set environment variable for Chromium location
-ENV CHROMIUM_PATH=/usr/bin/chromium
+# Set environment variable for headless Chromium
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROME_PATH=/usr/bin/chromium
 
-# Set working directory inside container
+# Set working directory
 WORKDIR /app
 
-# Copy all files into container
-COPY . /app
-
-# Install Python dependencies
+# Copy requirements and install
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the main script
-CMD ["python", "main.py"]
+# Copy project files
+COPY . .
 
+# Run your script
+CMD ["python", "main.py"]
