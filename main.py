@@ -98,9 +98,12 @@ def check_availability(driver, date_list):
         
         spans = driver.find_elements(By.CSS_SELECTOR, "span.sr-only")
         texts = [s.text.strip() for s in spans]
-        
-        print(f"Texts: {texts}, Date list: {date_list}")
+
+       
         for text in texts:
+            if not text.strip():   #  ignore empty strings
+                continue
+
             if text.upper() in date_list:
                 return text
 
@@ -109,7 +112,7 @@ def check_availability(driver, date_list):
     
 
 def main():
-    print("YES TESTING YES")
+   
     driver = setup_driver()
 
     dates = set() # empty for now
