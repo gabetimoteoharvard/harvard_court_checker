@@ -73,6 +73,8 @@ def check_availability(driver, date_list):
 
     button_present = click_button(driver)
 
+    all_avail = []
+
     if button_present:
         time.sleep(2)
 
@@ -90,9 +92,9 @@ def check_availability(driver, date_list):
             exact_date = parse_into_text(day, month, year)
     
             if exact_date in date_list:
-                return exact_date
+                all_avail.append(exact_date)
             
-        return None
+        return all_avail
     
     else:
         
@@ -101,13 +103,14 @@ def check_availability(driver, date_list):
 
        
         for text in texts:
-            if not text.strip():   #  ignore empty strings
+            if not text.strip():   
                 continue
 
             if text.upper() in date_list:
-                return text
+                all_avail.append(text)
+        
+        return all_avail
 
-        return None
 
     
 
@@ -131,22 +134,24 @@ def main():
     
     while True:
         try:
-            available_day = check_availability(driver, dates)
+            available_days = check_availability(driver, dates)
 
-            if available_day and available_day not in days_checked:
-                send_email(
-                    subject=f"Court Available! {available_day}",
-                    body=f"Good news. A court is now available at the following date: {available_day}",
-                    to_email="gabrieltimoteo@college.harvard.edu"
-                )
+            for available_day in available_days:
 
-                dates.remove(available_day)
-                days_checked.add(available_day)
+                if available_day and available_day not in days_checked:
+                    send_email(
+                        subject=f"Court Available! {available_day}",
+                        body=f"Good news. A court is now available at the following date: {available_day}",
+                        to_email="gabrieltimoteo@college.harvard.edu"
+                    )
 
-                # save updated dates file (rewrite everything)
-                with open("dates.txt", "w") as f:
-                    for d in dates:
-                        f.write(d + "\n")
+                    dates.remove(available_day)
+                    days_checked.add(available_day)
+
+                    # save updated dates file (rewrite everything)
+                    with open("dates.txt", "w") as f:
+                        for d in dates:
+                            f.write(d + "\n")
 
             print("Checked. Sleeping for 120 seconds...")
             time.sleep(120)
